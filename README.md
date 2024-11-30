@@ -36,8 +36,7 @@ This project implements a book recommendation system based on collaborative filt
 ## File Structure
 
 - `datasets/` - Folder containing CSV files for Books, Ratings, and Users data.
-- `recommendation_system.py` - Python file that contains the recommendation system code.
-- `requirements.txt` - File listing the Python dependencies required for the project.
+
 
 ## Requirements
 - pandas
@@ -47,7 +46,7 @@ This project implements a book recommendation system based on collaborative filt
 
 You can install all the dependencies by running:
 ```bash
-pip install -r requirements.txt
+pip install ***
 ```
 
 ## Example Output
@@ -79,7 +78,7 @@ No similar books found.
 
 1. Fork the repository.
 2. Create your feature branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -am 'Add new feature'`).
+3. Commit your changes (`git commit -m 'Add new feature'`).
 4. Push to the branch (`git push origin feature/your-feature`).
 5. Open a pull request.
 
