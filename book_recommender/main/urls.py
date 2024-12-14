@@ -7,5 +7,6 @@ urlpatterns = [
     path("popular.html", views.popular, name = "popular"),
     path("recommend.html", views.recommend, name = "recommend"),
     path("index.html", views.main, name = "main"),
-    path("", views.main, name = "main")
+    path("", views.main, name = "main"),
+    path('api/recommend/', views.recommendApi, name='recommend_api')
 ]

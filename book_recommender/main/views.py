@@ -3,6 +3,8 @@ from .utils.ai import AI
 from django.http import JsonResponse
 import json
 import random
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt 
 
 def main(request):
     AI.createRecommendationInstance()
@@ -77,3 +79,21 @@ def get_book_info(request, book_name):
 def recommend(request):
 
     return render(request, "recommend.html")
+
+@csrf_exempt
+def recommendApi(request):
+    if request.method == "GET":
+        name = request.GET.get('name', '')
+    
+        books = AI.recommend(name) 
+        book_data = []
+        for book in books:
+            book_data.append({
+                'title': book,
+                'description': "book.description",
+                'category': "book.category",
+            })
+        
+        return JsonResponse({'book': book_data[0]})
+
+    return JsonResponse({'error': 'Invalid HTTP method. Use GET.'}, status=400)

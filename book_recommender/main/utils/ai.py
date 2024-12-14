@@ -7,6 +7,7 @@ from django.conf import settings
 import os
 import requests
 import json
+import pickle
 
 class AI:
 
@@ -14,10 +15,11 @@ class AI:
     pt = []
     isWorked = False
     readyToRecommend = False
-    api_key = "AIzaSyCbTze7oL9dg8cmLdaTpxs5_XN6jCLiiWc"
+    api_key = "AIzaSyBiephTv_bRABusQde8341QqHxkF4uxtto"
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={api_key}"
     isGeminiWorked = False
     geminiBooks = []
+    cache_file = "recommendation_cache.pkl"
 
     @staticmethod
     def createRecommendationInstance():
@@ -25,7 +27,15 @@ class AI:
             AI.isWorked = True
         else:
             return
-        
+        if os.path.exists(AI.cache_file):
+            with open(AI.cache_file, "rb") as f:
+                data = pickle.load(f)
+                AI.pt = data["pt"]
+                AI.similarities = data["similarities"]
+                AI.isWorked = True
+                AI.readyToRecommend = True
+                print("Veriler önbellekten yüklendi.")
+                return
         books_path = os.path.join(settings.BASE_DIR, 'datasets', 'Books.csv')
         ratings_path = os.path.join(settings.BASE_DIR, 'datasets', 'ratings.csv')
         users_path = os.path.join(settings.BASE_DIR, 'datasets', 'Users.csv')
@@ -210,6 +220,9 @@ class AI:
         AI.pt.fillna(0, inplace=True)
 
         AI.similarities = cosine_similarity(AI.pt)
+
+        with open(AI.cache_file, "wb") as f:
+            pickle.dump({"pt": AI.pt, "similarities": AI.similarities}, f)
 
         AI.readyToRecommend = True
 
